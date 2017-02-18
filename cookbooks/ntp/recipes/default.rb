@@ -39,7 +39,7 @@ else
     only_if { node['platform_family'] == 'debian' && node['platform_version'].to_i >= 16 }
   end
 
-  [node['ntp']['varlibdir'], node['ntp']['statsdir']].each do |ntpdir|
+  [node['ntp']['varlibdir'],node['ntp']['statsdir']].each do |ntpdir|
     directory ntpdir do
       owner node['ntp']['var_owner']
       group node['ntp']['var_group']
@@ -120,6 +120,7 @@ execute 'Force sync hardware clock with system clock' do
   only_if { node['ntp']['sync_hw_clock'] && !(platform_family?('windows') || platform_family?('freebsd')) }
 end
 
+Chef::Log.info('** Going to install the ntp service now...')
 service node['ntp']['service'] do
   supports status: true, restart: true
   action [:enable, :start]
@@ -127,3 +128,4 @@ service node['ntp']['service'] do
   retries 3
   retry_delay 5
 end
+Chef::Log.info('** ntp service installed and started successfully!')
