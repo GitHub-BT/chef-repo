@@ -27,6 +27,7 @@ file "#{node[:oracle][:ora_inventory]}/ContentsXML/libs.xml" do
   only_if { File.directory?("#{node[:oracle][:ora_inventory]}/ContentsXML" ) }
   mode '00664'
 end
+
 # If client is installed first, changing group ownership to avoid
 # a permission issue.
 execute "chown_back_to_oinstall" do
